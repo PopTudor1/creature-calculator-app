@@ -373,6 +373,7 @@ export default function CreatureCalculator(): JSX.Element {
       style={{
         padding: 32,
         backgroundColor: "black",
+        width: "100%",
         height: "100%",
         display: "flex",
         flexDirection: "column",
