@@ -248,17 +248,12 @@ export default function CreatureCalculator(): JSX.Element {
       return;
     }
 
-    // Check for any creature with level 0
-    let hasZeroLevel = false;
     for (let i = 0; i < forms.length; i++) {
-      if (forms[i].currentLevel === 0 || forms[i].currentLevel === "") {
-        hasZeroLevel = true;
-        break;
+      const level = Number(forms[i].currentLevel);
+      if (isNaN(level) || level <= 0) {
+        alert("All creatures must have a starting level greater than 0.");
+        return;
       }
-    }
-    if (hasZeroLevel) {
-      alert("All creatures must have a starting level greater than 0.");
-      return;
     }
 
     const initialCreatures = forms.map((form, index) => ({
