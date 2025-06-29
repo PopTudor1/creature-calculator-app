@@ -1,5 +1,4 @@
 .container {
-  padding: 32px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -19,12 +18,16 @@
   color: white;
 
   @media (max-width: 768px) {
-    font-size: 12px;
+    font-size: 10px;
   }
 }
 
 .notes-section {
   color: white;
+
+  @media (max-width: 768px) {
+    padding: 8px;
+  }
 }
 
 .notes-section ul {
@@ -32,6 +35,8 @@
 
   @media (max-width: 768px) {
     font-size: 16px;
+    padding-inline-start: 32px;
+    margin-top: 8px;
   }
 }
 
@@ -73,6 +78,10 @@
   color: #9b4dff;
   font-size: 24px;
   font-weight: 800;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 }
 
 .creature-input-field {
@@ -95,6 +104,7 @@
   grid-template-columns: 300px repeat(var(--num-creatures), minmax(0, 150px));
 
   @media (max-width: 768px) {
+    gap: 6px;
     grid-template-columns: 100px repeat(var(--num-creatures), minmax(0, 120px));
   }
 }
@@ -114,6 +124,11 @@
   height: 24px;
   padding-left: 4px;
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+    padding-left: 0px;
+  }
 }
 
 .select-option-yellow {
@@ -133,7 +148,7 @@
   height: 100px;
 
   @media (max-width: 768px) {
-    height: 50px;
+    height: 60px;
   }
 }
 
@@ -143,8 +158,8 @@
   object-fit: cover;
 
   @media (max-width: 768px) {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
   }
 }
 
@@ -154,11 +169,20 @@
   height: 24px;
   align-content: center;
   padding-left: 8px;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 }
 
 .select-evolution {
   cursor: pointer;
   color: inherit;
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+    padding-left: 0px;
+  }
 }
 
 /* test2 */
@@ -172,6 +196,7 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
+    padding: 0rem;
   }
 }
 .main-content {
@@ -187,6 +212,11 @@ h1.title {
   font-weight: bold;
   text-align: center;
   color: red;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin-bottom: 0px;
+  }
 }
 .input-row {
   display: flex;
@@ -207,6 +237,10 @@ label.creature-count-label {
   color: #9b4dff;
   font-size: 24px;
   font-weight: 800;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 }
 input.creature-count-input {
   width: 50px;
@@ -252,6 +286,10 @@ button.run-button {
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
 }
 table {
   width: 100%;
@@ -270,6 +308,11 @@ select.rarity-select {
   font-weight: 700;
   border: none;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    padding-left: 0px;
+  }
 }
 select.image-select,
 select.evolution-select {
@@ -282,6 +325,8 @@ select.evolution-select {
 
   @media (max-width: 768px) {
     width: 80px;
+    font-size: 10px;
+    padding-left: 0px;
   }
 }
 input.level-input {
@@ -291,6 +336,10 @@ input.level-input {
   text-align: center;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
+
+  @media (max-width: 768px) {
+    padding-left: 0px;
+  }
 }
 .sidebar {
   width: 40%;
@@ -304,9 +353,19 @@ input.level-input {
 }
 section.sidebar-section {
   width: 100%;
+
+  @media (max-width: 768px) {
+    padding-left: 16px;
+    padding-right: 16px;
+    width: auto;
+  }
 }
 h2.sidebar-title {
   color: orange;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 }
 ol.sidebar-list {
   color: white;
@@ -407,4 +466,9 @@ ul.sidebar-list-yellow {
     font-size: 14px;
     padding: 4px;
   }
+}
+
+.notes-text {
+  font-size: 20px;
+  padding-left: 16px;
 }

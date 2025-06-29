@@ -384,7 +384,7 @@ export default function CreatureCalculator(): JSX.Element {
         ( made by Tudique26 from the KNIGHTSXORDER guild on Trakan server )
       </span>
       <section className="notes-section">
-        <h2>Notes:</h2>
+        <span className="notes-text">Notes:</span>
         <ul>
           <li className="orange-note">
             THIS CALCULATOR WORKS UP TO LVL {levelCostsSSR.length + 1} FOR SSR
@@ -948,7 +948,9 @@ export default function CreatureCalculator(): JSX.Element {
                         />
                       </td>
 
-                      <td>{finalLevels ? finalLevels[index] : "-"}</td>
+                      <td className="table-text">
+                        {finalLevels ? finalLevels[index] : "-"}
+                      </td>
                     </tr>
                   );
                 })}
