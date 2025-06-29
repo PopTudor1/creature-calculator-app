@@ -822,7 +822,7 @@ export default function CreatureCalculator(): JSX.Element {
                         <select
                           value={form.rarity}
                           onChange={(e) => {
-                            const newRarity = e.target.value;
+                            const newRarity = e.target.value as "SSR" | "UR";
                             const defaultData =
                               newRarity === "SSR"
                                 ? defaultSSRFormData
