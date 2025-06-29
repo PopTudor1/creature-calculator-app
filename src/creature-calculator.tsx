@@ -167,10 +167,12 @@ export default function CreatureCalculator(): JSX.Element {
 
   const [currentDefaultFormData] = useState<FormData>(defaultSSRFormData);
 
-  const [numberOfCreatures, setNumberOfCreatures] = useState<number>(3);
+  const [numberOfCreatures, setNumberOfCreatures] = useState<string | number>(
+    "3"
+  );
 
   const [forms, setForms] = useState<FormData[]>(
-    Array(numberOfCreatures).fill({ ...currentDefaultFormData })
+    Array(Number(numberOfCreatures)).fill({ ...currentDefaultFormData })
   );
 
   function updateForm(index: number, updated: FormData) {
@@ -355,13 +357,13 @@ export default function CreatureCalculator(): JSX.Element {
       const newForms = [...prevForms];
 
       // Add default forms if count increased
-      while (newForms.length < numberOfCreatures) {
+      while (newForms.length < Number(numberOfCreatures)) {
         newForms.push({ ...currentDefaultFormData });
       }
 
       // Trim forms if count decreased
-      if (newForms.length > numberOfCreatures) {
-        newForms.length = numberOfCreatures;
+      if (newForms.length > Number(numberOfCreatures)) {
+        newForms.length = Number(numberOfCreatures);
       }
 
       return newForms;
@@ -454,7 +456,12 @@ export default function CreatureCalculator(): JSX.Element {
             min="1"
             max="6"
             onChange={(e) => {
-              const value = parseInt(e.target.value, 10);
+              const val = e.target.value;
+              if (val === "") {
+                setNumberOfCreatures(""); // allow clearing
+                return;
+              }
+              const value = parseInt(val, 10);
               if (!isNaN(value) && value >= 1 && value <= 12) {
                 setNumberOfCreatures(value);
               }
@@ -899,9 +906,14 @@ export default function CreatureCalculator(): JSX.Element {
                 min="1"
                 max="6"
                 onChange={(e) => {
-                  const value = parseInt(e.target.value, 10);
-                  if (!isNaN(value) && value >= 1 && value <= 12) {
-                    setNumberOfCreatures(value);
+                  const val = e.target.value;
+                  if (val === "") {
+                    setNumberOfCreatures(""); // allow clearing
+                  } else {
+                    const parsed = parseInt(val, 10);
+                    if (!isNaN(parsed) && parsed >= 1 && parsed <= 12) {
+                      setNumberOfCreatures(parsed);
+                    }
                   }
                 }}
                 style={{
