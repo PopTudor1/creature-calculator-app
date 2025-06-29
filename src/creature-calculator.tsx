@@ -29,6 +29,8 @@ import PumpkinHeadIcon from "./assets/ur-creatures/Pumpkin-head-icon.png";
 import RagasIcon from "./assets/ur-creatures/Ragas-icon.png";
 import TumoruIcon from "./assets/ur-creatures/Tumoru-icon.png";
 
+import "./creature-calculator.css";
+
 interface FormData {
   image: string;
   evolution: string;
@@ -195,6 +197,11 @@ export default function CreatureCalculator(): JSX.Element {
   const [finalTotalStatsSum, setFinalTotalStatsSum] = useState<number>(0);
   const [remainingResource, setRemainingResource] = useState(totalResource);
   const [finalLevels, setFinalLevels] = useState<number[] | null>(null); // Array to store final levels, changed from object to array
+  const gridStyle: React.CSSProperties & {
+    [key: `--${string}`]: string | number;
+  } = {
+    "--num-creatures": numberOfCreatures,
+  };
 
   const calculateTotalStats = (
     level: number,
@@ -371,39 +378,24 @@ export default function CreatureCalculator(): JSX.Element {
   }, [numberOfCreatures]);
 
   return (
-    <div
-      style={{
-        padding: 32,
-        backgroundColor: "black",
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <h1 style={{ color: "red" }}>CREATURE CALCULATOR</h1>
-      <h5 style={{ color: "white" }}>
+    <div className="container">
+      <h1 className="container-title">CREATURE CALCULATOR</h1>
+      <span className="madeBy">
         ( made by Tudique26 from the KNIGHTSXORDER guild on Trakan server )
-      </h5>
-      <section>
-        <h2 style={{ color: "white" }}>Notes:</h2>
-        <ul style={{ color: "white", fontSize: "20px" }}>
-          <li style={{ color: "orange" }}>
+      </span>
+      <section className="notes-section">
+        <h2>Notes:</h2>
+        <ul>
+          <li className="orange-note">
             THIS CALCULATOR WORKS UP TO LVL {levelCostsSSR.length + 1} FOR SSR
             CREATURES AND UP TO LVL {levelCostsUR.length + 1} FOR UR CREATURES
           </li>
-          <li style={{ color: "red", fontSize: "20px" }}>
+          <li className="red-note">
             If you have SSR creatures over lvl {levelCostsSSR.length + 1} or UR
             creatures UNDER lvl {levelCostsUR.length + 1} and wish to help with
             data support to improve these calculators, add me on discord using
-            my id:{" "}
-            <span style={{ color: "green", fontWeight: "700" }}>"Tudique"</span>{" "}
-            or{" "}
-            <span style={{ color: "green", fontWeight: "700" }}>
-              "Tudique#3272"
-            </span>{" "}
+            my id: <span className="highlight-green">"Tudique"</span> or{" "}
+            <span className="highlight-green">"Tudique#3272"</span>{" "}
           </li>
           <li>
             Make sure to choose the correct evolution and level to get accurate
@@ -422,31 +414,23 @@ export default function CreatureCalculator(): JSX.Element {
             appear.
           </li>
         </ul>
-        <ul style={{ color: "lightGreen", fontSize: "20px" }}>
+
+        <ul className="lightgreen-note">
           <li>
             The two calculators are linked, so the selections made in one
             directly influence the selections in the other one.
           </li>
         </ul>
-        <ul style={{ color: "yellow" }}>
+
+        <ul className="yellow-note">
           <li>
             Special thanks to Zohix for helping me gather the necessary data.
           </li>
         </ul>
       </section>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "8px",
-          gap: "16px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <label
-            htmlFor="creatureCount"
-            style={{ color: "#9B4DFF", fontSize: "24px", fontWeight: "800" }}
-          >
+      <div className="creature-input-container">
+        <div className="creature-input-group">
+          <label htmlFor="creatureCount" className="creature-input-label">
             Number of Creatures:
           </label>
           <input
@@ -458,7 +442,7 @@ export default function CreatureCalculator(): JSX.Element {
             onChange={(e) => {
               const val = e.target.value;
               if (val === "") {
-                setNumberOfCreatures(""); // allow clearing
+                setNumberOfCreatures("");
                 return;
               }
               const value = parseInt(val, 10);
@@ -466,29 +450,13 @@ export default function CreatureCalculator(): JSX.Element {
                 setNumberOfCreatures(value);
               }
             }}
-            style={{
-              width: "50px",
-              height: "24px",
-              paddingLeft: "8px",
-              fontWeight: "700",
-              fontSize: "20px",
-            }}
+            className="creature-input-field"
             placeholder="No. Creatures"
           />
         </div>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `300px repeat(${numberOfCreatures}, minmax(0, 150px))`,
-          gap: 12,
-          alignItems: "center",
-          backgroundColor: "black",
-          padding: "16px",
-          border: "1px solid white",
-        }}
-      >
+      <div className="creature-grid" style={gridStyle}>
         {[
           { label: "Creature rarity:", field: "rarity", type: "rarity" },
           { label: "Creature name:", field: "image", type: "select" },
@@ -528,22 +496,16 @@ export default function CreatureCalculator(): JSX.Element {
           },
         ].map((meta, i) => (
           <React.Fragment key={`row-${i}`}>
-            <label
-              style={{
-                color: "rgb(255, 219, 88)",
-                fontSize: "20px",
-                justifySelf: "flex-end",
-              }}
-            >
-              {meta.label}
-            </label>
+            <label className="creature-label">{meta.label}</label>
             {forms.map((form, idx) => {
+              const key = `${meta.type}-${idx}-${meta.field}`;
               const bgColor =
                 form.rarity === "SSR"
                   ? imageOptionsSSR.find((opt) => opt.src === form.image)
                       ?.color || "white"
                   : imageOptionsUR.find((opt) => opt.src === form.image)
                       ?.color || "white";
+
               const selectedEvolutionColor =
                 form.rarity === "SSR"
                   ? evolutionOptionsSSR.find(
@@ -553,51 +515,33 @@ export default function CreatureCalculator(): JSX.Element {
                       (opt) => opt.evolution === form.evolution
                     )?.color || "white";
 
-              const key = `${meta.type}-${idx}-${meta.field}`;
-
               switch (meta.type) {
                 case "rarity":
                   return (
                     <select
+                      className="select-base"
                       value={form.rarity}
                       onChange={(e) => {
-                        const newRarity = e.target.value as "SSR" | "UR";
+                        const newRarity = e.target.value;
                         const defaultData =
                           newRarity === "SSR"
                             ? defaultSSRFormData
                             : defaultURFormData;
-
                         updateForm(idx, {
                           ...forms[idx],
-                          rarity: newRarity,
-                          image: defaultData.image,
-                          evolution: defaultData.evolution,
-                          currentLevel: defaultData.currentLevel,
-                          maxLevel: defaultData.maxLevel,
+                          // rarity: newRarity,
+                          ...defaultData,
                         });
-                        // setFinalLevels(null);
                       }}
                       style={{
-                        height: "24px",
-                        paddingLeft: "4px",
                         backgroundColor:
                           form.rarity === "SSR" ? "yellow" : "#40E0D0",
-                        fontWeight: "700",
                       }}
                     >
-                      <option
-                        value="SSR"
-                        style={{ backgroundColor: "yellow", fontWeight: "700" }}
-                      >
+                      <option value="SSR" className="select-option-yellow">
                         SSR
                       </option>
-                      <option
-                        value="UR"
-                        style={{
-                          backgroundColor: "#40E0D0",
-                          fontWeight: "700",
-                        }}
-                      >
+                      <option value="UR" className="select-option-turquoise">
                         UR
                       </option>
                     </select>
@@ -605,7 +549,6 @@ export default function CreatureCalculator(): JSX.Element {
                 case "select": {
                   const imageOptions =
                     form.rarity === "SSR" ? imageOptionsSSR : imageOptionsUR;
-
                   return (
                     <select
                       key={key}
@@ -613,11 +556,8 @@ export default function CreatureCalculator(): JSX.Element {
                       onChange={(e) =>
                         handleChange(idx, "image", e.target.value)
                       }
-                      style={{
-                        backgroundColor: bgColor,
-                        height: "24px",
-                        paddingLeft: "4px",
-                      }}
+                      className="select-base"
+                      style={{ backgroundColor: bgColor }}
                     >
                       {imageOptions.map((option) => (
                         <option
@@ -631,27 +571,32 @@ export default function CreatureCalculator(): JSX.Element {
                     </select>
                   );
                 }
+                case "image":
+                  return (
+                    <div className="image-container" key={key}>
+                      <img
+                        src={form.image}
+                        alt="Selected"
+                        className="image-preview"
+                      />
+                    </div>
+                  );
                 case "evolution": {
-                  const isSSR = form.rarity === "SSR";
-                  const filteredOptions = isSSR
-                    ? evolutionOptionsSSR
-                    : evolutionOptionsUR;
+                  const evoOptions =
+                    form.rarity === "SSR"
+                      ? evolutionOptionsSSR
+                      : evolutionOptionsUR;
                   return (
                     <select
-                      key={`evolution-${idx}`}
+                      key={key}
                       value={form.evolution}
-                      onChange={(e) => {
-                        handleChange(idx, "evolution", e.target.value);
-                      }}
-                      style={{
-                        backgroundColor: selectedEvolutionColor,
-                        height: "24px",
-                        paddingLeft: "4px",
-                        cursor: "pointer",
-                        color: "inherit",
-                      }}
+                      onChange={(e) =>
+                        handleChange(idx, "evolution", e.target.value)
+                      }
+                      className="select-colored select-evolution"
+                      style={{ backgroundColor: selectedEvolutionColor }}
                     >
-                      {filteredOptions.map((option) => (
+                      {evoOptions.map((option) => (
                         <option
                           key={option.evolution}
                           value={option.evolution}
@@ -663,75 +608,37 @@ export default function CreatureCalculator(): JSX.Element {
                     </select>
                   );
                 }
-                case "image":
-                  return (
-                    <div
-                      key={key}
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: 100,
-                      }}
-                    >
-                      <img
-                        src={form.image}
-                        alt="Selected"
-                        style={{ width: 100, height: 100, objectFit: "cover" }}
-                      />
-                    </div>
-                  );
                 case "number": {
                   const min = 1;
-                  let max = 1;
-
-                  if (meta.field === "currentLevel") {
-                    max =
-                      form.rarity === "SSR"
+                  const max =
+                    meta.field === "currentLevel"
+                      ? form.rarity === "SSR"
                         ? levelCostsSSR.length
-                        : levelCostsUR.length;
-                  }
-                  if (meta.field === "maxLevel") {
-                    max =
-                      form.rarity === "SSR"
-                        ? levelCostsSSR.length + 1
-                        : levelCostsUR.length + 1;
-                  }
+                        : levelCostsUR.length
+                      : form.rarity === "SSR"
+                      ? levelCostsSSR.length + 1
+                      : levelCostsUR.length + 1;
                   return (
                     <input
-                      key={key}
                       type="number"
                       min={min}
                       max={max}
-                      value={
-                        form[meta.field as keyof FormData] as number | string
-                      }
+                      value={form[meta.field as keyof FormData]}
                       onChange={(e) => {
-                        const rawValue = e.target.value;
-
-                        // Allow empty string (for editing)
-                        if (rawValue === "") {
-                          handleChange(idx, meta.field as keyof FormData, "");
-                          return;
-                        }
-
-                        // Convert to number and clamp
-                        const value = Number(rawValue);
-                        if (!isNaN(value)) {
-                          const clamped = Math.min(Math.max(value, min!), max!);
-                          handleChange(
+                        const val = e.target.value;
+                        if (val === "")
+                          return handleChange(
                             idx,
                             meta.field as keyof FormData,
-                            clamped
+                            ""
                           );
-                        }
+                        const num = Math.max(min, Math.min(max, parseInt(val)));
+                        if (!isNaN(num))
+                          handleChange(idx, meta.field as keyof FormData, num);
                       }}
-                      style={{
-                        backgroundColor: bgColor,
-                        height: "24px",
-                        alignContent: "center",
-                        paddingLeft: "8px",
-                      }}
+                      className="input-number"
+                      style={{ backgroundColor: bgColor }}
+                      key={key}
                     />
                   );
                 }
@@ -739,12 +646,8 @@ export default function CreatureCalculator(): JSX.Element {
                   return (
                     <div
                       key={key}
-                      style={{
-                        backgroundColor: bgColor,
-                        height: "24px",
-                        alignContent: "center",
-                        paddingLeft: "8px",
-                      }}
+                      className="div-output"
+                      style={{ backgroundColor: bgColor }}
                     >
                       {getCostBetweenLevels(
                         form.currentLevel,
@@ -758,29 +661,21 @@ export default function CreatureCalculator(): JSX.Element {
                     form.maxLevel,
                     form.evolution
                   );
-                  let multiplier = 0;
+                  let multiplier = 1;
                   if (meta.field === "statsTotal") {
                     multiplier =
                       form.rarity === "SSR"
                         ? statsMultiplierSSR
                         : statsMultiplierUR;
-                  }
-                  if (meta.field === "element") {
+                  } else if (meta.field === "element") {
                     multiplier = form.rarity === "SSR" ? 2 : 1.5;
-                  }
-                  if (meta.field === "health") {
-                    multiplier = 1;
                   }
                   const value = health * multiplier;
                   return (
                     <div
                       key={key}
-                      style={{
-                        backgroundColor: bgColor,
-                        height: "24px",
-                        alignContent: "center",
-                        paddingLeft: "8px",
-                      }}
+                      className="div-output"
+                      style={{ backgroundColor: bgColor }}
                     >
                       {value}
                     </div>
@@ -796,50 +691,34 @@ export default function CreatureCalculator(): JSX.Element {
                   return (
                     <div
                       key={key}
-                      style={{
-                        backgroundColor: bgColor,
-                        height: "24px",
-                        alignContent: "center",
-                        paddingLeft: "8px",
-                      }}
+                      className="div-output"
+                      style={{ backgroundColor: bgColor }}
                     >
                       {efficiency.toFixed(3)}%
                     </div>
                   );
                 }
                 case "statsGained": {
-                  const statsAtCurrentLevel =
+                  const multiplier =
                     form.rarity === "SSR"
-                      ? getHealthAtLevelGeneralized(
-                          form.currentLevel,
-                          form.evolution
-                        ) * statsMultiplierSSR
-                      : getHealthAtLevelGeneralized(
-                          form.currentLevel,
-                          form.evolution
-                        ) * statsMultiplierUR;
-                  const statsAtMaxLevel =
-                    form.rarity === "SSR"
-                      ? getHealthAtLevelGeneralized(
-                          form.maxLevel,
-                          form.evolution
-                        ) * statsMultiplierSSR
-                      : getHealthAtLevelGeneralized(
-                          form.maxLevel,
-                          form.evolution
-                        ) * statsMultiplierUR;
-                  const statsGained = statsAtMaxLevel - statsAtCurrentLevel;
+                      ? statsMultiplierSSR
+                      : statsMultiplierUR;
+                  const statsAtCurrent =
+                    getHealthAtLevelGeneralized(
+                      form.currentLevel,
+                      form.evolution
+                    ) * multiplier;
+                  const statsAtMax =
+                    getHealthAtLevelGeneralized(form.maxLevel, form.evolution) *
+                    multiplier;
+                  const gain = statsAtMax - statsAtCurrent;
                   return (
                     <div
                       key={key}
-                      style={{
-                        backgroundColor: bgColor,
-                        height: "24px",
-                        alignContent: "center",
-                        paddingLeft: "8px",
-                      }}
+                      className="div-output"
+                      style={{ backgroundColor: bgColor }}
                     >
-                      {statsGained}
+                      {gain}
                     </div>
                   );
                 }
@@ -850,53 +729,13 @@ export default function CreatureCalculator(): JSX.Element {
           </React.Fragment>
         ))}
       </div>
-      <div
-        style={{
-          minHeight: "100vh",
-          backgroundColor: "#000",
-          padding: "1rem",
-          color: "#fff",
-          display: "flex",
-          gap: "8px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "4xl",
-            marginLeft: "auto",
-            marginRight: "auto",
-            display: "flex",
-            flexDirection: "column",
-            gap: "8px",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "1.5rem",
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "red",
-            }}
-          >
-            CREATURE LEVELING SIMULATOR
-          </h1>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "8px",
-              gap: "16px",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <label
-                htmlFor="creatureCount"
-                style={{
-                  color: "#9B4DFF",
-                  fontSize: "24px",
-                  fontWeight: "800",
-                }}
-              >
+      <div className="app-container">
+        <div className="main-content">
+          <h1 className="title">CREATURE LEVELING SIMULATOR</h1>
+
+          <div className="input-row">
+            <div className="label-input-group">
+              <label htmlFor="creatureCount" className="creature-count-label">
                 Number of Creatures:
               </label>
               <input
@@ -916,130 +755,45 @@ export default function CreatureCalculator(): JSX.Element {
                     }
                   }
                 }}
-                style={{
-                  width: "50px",
-                  height: "24px",
-                  paddingLeft: "8px",
-                  fontWeight: "700",
-                  fontSize: "20px",
-                }}
                 placeholder="No. Creatures"
+                className="creature-count-input"
               />
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <label
-              htmlFor="totalResource"
-              style={{ color: "#fff", fontSize: "18px", fontWeight: "700" }}
-            >
-              Creature food:
-            </label>
-            <input
-              type="number"
-              id="totalResource"
-              value={totalResourceInput}
-              onChange={handleResourceInputChange}
-              style={{
-                width: "10rem",
-                padding: "0.5rem",
-                border: "1px solid #d1d5db",
-                borderRadius: "0.375rem",
-                color: "#000",
-              }}
-              placeholder="Total Resource"
-            />
-            <button
-              onClick={updateResource}
-              style={{
-                backgroundColor: "#3b82f6",
-                color: "#fff",
-                fontWeight: "bold",
-                padding: "0.5rem 1rem",
-                borderRadius: "0.375rem",
-                cursor: "pointer",
-              }}
-            >
-              Update Food
-            </button>
-            <button
-              onClick={runLevelingSimulation}
-              style={{
-                backgroundColor: "#16a34a",
-                color: "#fff",
-                fontWeight: "bold",
-                padding: "0.5rem 1rem",
-                borderRadius: "0.375rem",
-                marginTop: "0",
-                cursor: "pointer",
-              }}
-            >
-              Run Simulation
-            </button>
+
+          <div className="creature-food">
+            <div className="creature-food-label-input">
+              <label htmlFor="totalResource" className="food-label">
+                Creature food:
+              </label>
+              <input
+                type="number"
+                id="totalResource"
+                value={totalResourceInput}
+                onChange={handleResourceInputChange}
+                placeholder="Total Resource"
+                className="food-input"
+              />
+            </div>
+            <div className="buttons-container">
+              <button onClick={updateResource} className="update-button">
+                Update Food
+              </button>
+              <button onClick={runLevelingSimulation} className="run-button">
+                Run Simulation
+              </button>
+            </div>
           </div>
 
-          <div
-            style={{
-              backgroundColor: "#1f2937",
-              padding: "1rem",
-              borderRadius: "0.5rem",
-              boxShadow:
-                "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)",
-            }}
-          >
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                color: "#fff",
-              }}
-            >
+          <div className="table-container">
+            <table>
               <thead>
                 <tr>
-                  <th
-                    style={{
-                      padding: "0.75rem",
-                      borderBottom: "1px solid #e5e7eb",
-                      textAlign: "center",
-                    }}
-                  >
-                    Rarity
-                  </th>
-                  <th
-                    style={{
-                      padding: "0.75rem",
-                      borderBottom: "1px solid #e5e7eb",
-                      textAlign: "center",
-                    }}
-                  >
-                    Selected Creature
-                  </th>
-                  <th
-                    style={{
-                      padding: "0.75rem",
-                      borderBottom: "1px solid #e5e7eb",
-                      textAlign: "center",
-                    }}
-                  >
-                    Selected Evolution
-                  </th>
-                  <th
-                    style={{
-                      padding: "0.75rem",
-                      borderBottom: "1px solid #e5e7eb",
-                      textAlign: "center",
-                    }}
-                  >
-                    Current Level
-                  </th>
-                  <th
-                    style={{
-                      padding: "0.75rem",
-                      borderBottom: "1px solid #e5e7eb",
-                      textAlign: "center",
-                    }}
-                  >
-                    Estimated Level
-                  </th>
+                  <th className="table-text">Rarity</th>
+                  <th className="table-text">Selected Creature</th>
+                  <th className="table-text">Selected Evolution</th>
+                  <th className="table-text">Current Level</th>
+                  <th className="table-text">Estimated Level</th>
                 </tr>
               </thead>
               <tbody>
@@ -1064,17 +818,11 @@ export default function CreatureCalculator(): JSX.Element {
                       : evolutionOptionsUR;
                   return (
                     <tr key={index}>
-                      {/* Rarity Dropdown */}
-                      <td
-                        style={{
-                          padding: "0.75rem",
-                          borderBottom: "1px solid #e5e7eb",
-                        }}
-                      >
+                      <td className="table-text">
                         <select
                           value={form.rarity}
                           onChange={(e) => {
-                            const newRarity = e.target.value as "SSR" | "UR";
+                            const newRarity = e.target.value;
                             const defaultData =
                               newRarity === "SSR"
                                 ? defaultSSRFormData
@@ -1088,22 +836,18 @@ export default function CreatureCalculator(): JSX.Element {
                               currentLevel: defaultData.currentLevel,
                               maxLevel: defaultData.maxLevel,
                             });
-                            //resets the simulation results
-                            // setFinalLevels(null);
                           }}
+                          className="rarity-select"
                           style={{
-                            height: "24px",
-                            paddingLeft: "4px",
                             backgroundColor:
                               form.rarity === "SSR" ? "yellow" : "#40E0D0",
-                            fontWeight: "700",
                           }}
                         >
                           <option
                             value="SSR"
                             style={{
                               backgroundColor: "yellow",
-                              fontWeight: "700",
+                              fontWeight: 700,
                             }}
                           >
                             SSR
@@ -1112,7 +856,7 @@ export default function CreatureCalculator(): JSX.Element {
                             value="UR"
                             style={{
                               backgroundColor: "#40E0D0",
-                              fontWeight: "700",
+                              fontWeight: 700,
                             }}
                           >
                             UR
@@ -1120,25 +864,14 @@ export default function CreatureCalculator(): JSX.Element {
                         </select>
                       </td>
 
-                      {/* Image Dropdown */}
-                      <td
-                        style={{
-                          padding: "0.75rem",
-                          borderBottom: "1px solid #e5e7eb",
-                        }}
-                      >
+                      <td className="table-text">
                         <select
                           value={form.image}
                           onChange={(e) =>
                             handleChange(index, "image", e.target.value)
                           }
-                          style={{
-                            width: "150px",
-                            backgroundColor: bgColor,
-                            height: "24px",
-                            alignContent: "center",
-                            paddingLeft: "8px",
-                          }}
+                          className="image-select"
+                          style={{ backgroundColor: bgColor }}
                         >
                           {form.rarity === "SSR" &&
                             imageOptionsSSR.map((option) => (
@@ -1163,100 +896,59 @@ export default function CreatureCalculator(): JSX.Element {
                         </select>
                       </td>
 
-                      {/* Evolution Dropdown */}
-                      <td
-                        style={{
-                          padding: "0.75rem",
-                          borderBottom: "1px solid #e5e7eb",
-                        }}
-                      >
-                        {(() => {
-                          return (
-                            <select
-                              value={form.evolution}
-                              onChange={(e) =>
-                                handleChange(index, "evolution", e.target.value)
-                              }
-                              style={{
-                                width: "150px",
-                                backgroundColor: selectedEvolutionColor,
-                                height: "24px",
-                                alignContent: "center",
-                                paddingLeft: "8px",
-                                cursor: "pointer",
-                              }}
+                      <td className="table-text">
+                        <select
+                          value={form.evolution}
+                          onChange={(e) =>
+                            handleChange(index, "evolution", e.target.value)
+                          }
+                          className="evolution-select"
+                          style={{ backgroundColor: selectedEvolutionColor }}
+                        >
+                          {filteredOptions.map((option) => (
+                            <option
+                              key={option.evolution}
+                              value={option.evolution}
+                              style={{ backgroundColor: option.color }}
                             >
-                              {filteredOptions.map((option) => (
-                                <option
-                                  key={option.evolution}
-                                  value={option.evolution}
-                                  style={{ backgroundColor: option.color }}
-                                >
-                                  {option.evolution}
-                                </option>
-                              ))}
-                            </select>
-                          );
-                        })()}
+                              {option.evolution}
+                            </option>
+                          ))}
+                        </select>
                       </td>
 
-                      {/* Current Level Input */}
-                      <td
-                        style={{
-                          padding: "0.75rem",
-                          borderBottom: "1px solid #e5e7eb",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        {(() => {
-                          const min = 1;
-                          const max =
+                      <td className="table-text">
+                        <input
+                          type="number"
+                          value={form.currentLevel}
+                          min={1}
+                          max={
                             form.rarity === "SSR"
                               ? levelCostsSSR.length
-                              : levelCostsUR.length;
-
-                          return (
-                            <input
-                              type="number"
-                              value={form.currentLevel}
-                              min={min}
-                              max={max}
-                              onChange={(e) => {
-                                const rawValue = e.target.value;
-                                if (rawValue === "") {
-                                  handleChange(index, "currentLevel", "");
-                                  return;
-                                }
-                                const parsed = Number(rawValue);
-                                if (!isNaN(parsed)) {
-                                  const clamped = Math.min(
-                                    Math.max(parsed, min),
-                                    max
-                                  );
-                                  handleChange(index, "currentLevel", clamped);
-                                }
-                              }}
-                              style={{
-                                width: "50px",
-                                height: "24px",
-                                alignContent: "center",
-                                paddingLeft: "8px",
-                              }}
-                            />
-                          );
-                        })()}
+                              : levelCostsUR.length
+                          }
+                          onChange={(e) => {
+                            const rawValue = e.target.value;
+                            if (rawValue === "") {
+                              handleChange(index, "currentLevel", "");
+                              return;
+                            }
+                            const parsed = Number(rawValue);
+                            if (!isNaN(parsed)) {
+                              const clamped = Math.min(
+                                Math.max(parsed, 1),
+                                form.rarity === "SSR"
+                                  ? levelCostsSSR.length
+                                  : levelCostsUR.length
+                              );
+                              handleChange(index, "currentLevel", clamped);
+                            }
+                          }}
+                          className="level-input"
+                        />
                       </td>
 
-                      {/* Final Level Display */}
-                      <td
-                        style={{
-                          padding: "0.75rem",
-                          borderBottom: "1px solid #e5e7eb",
-                        }}
-                      >
-                        {finalLevels ? finalLevels[index] : "-"}
-                      </td>
+                      <td>{finalLevels ? finalLevels[index] : "-"}</td>
                     </tr>
                   );
                 })}
@@ -1264,10 +956,11 @@ export default function CreatureCalculator(): JSX.Element {
             </table>
           </div>
         </div>
-        <div style={{ width: "40%" }}>
-          <section style={{ width: "100%" }}>
-            <h2 style={{ color: "orange" }}>HOW TO USE THE SIMULATOR ?</h2>
-            <ol style={{ color: "white", fontSize: "18px" }}>
+
+        <div className="sidebar">
+          <section className="sidebar-section">
+            <h2 className="sidebar-title">HOW TO USE THE SIMULATOR ?</h2>
+            <ol className="sidebar-list">
               <li>Select your number of creatures.</li>
               <li>Select your creatures.</li>
               <li>Select an evolution for each creature.</li>
@@ -1276,49 +969,37 @@ export default function CreatureCalculator(): JSX.Element {
               <li>Click on the Update Food button.</li>
               <li>Click on the Run Simulation button.</li>
             </ol>
-            <ul style={{ color: "lightGreen", fontSize: "20px" }}>
+            <ul className="sidebar-list-green">
               <li>
                 The two calculators are linked, so the selections made in one
                 directly influence the selections in the other one.
               </li>
             </ul>
-            <ul style={{ color: "yellow" }}>
+            <ul className="sidebar-list-yellow">
               <li>
                 Special thanks to Zohix for helping me gather the necessary
                 data.
               </li>
             </ul>
           </section>
+
           {finalLevels && (
-            <div style={{ backgroundColor: "#1f2937", padding: "12px" }}>
-              <h3
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "semibold",
-                  color: "orange",
-                }}
-              >
+            <div className="simulation-results">
+              <span className="simulation-results-title">
                 Simulation Results:
-              </h3>
-              <ul
-                style={{
-                  fontSize: "18px",
-                  paddingLeft: "1.25rem",
-                  listStyleType: "disc",
-                  color: "#fff",
-                }}
-              >
+              </span>
+              <ul className="simulation-results-list">
                 <li>Creature Food: {totalResource}</li>
                 <li>Remaining Food After Leveling: {remainingResource}</li>
                 <li>
                   Total Stats at Current Level (All Combined):{" "}
                   {initialTotalStatsSum}
                 </li>
-                <li style={{ fontSize: "20px", color: "red" }}>
+                <li className="red-text">
                   Total Stats at Estimated Level (All Combined):{" "}
                   {finalTotalStatsSum}
                 </li>
-                <li style={{ fontSize: "22px", color: "#FFD700" }}>
+                <li className="gold-text">
                   Total Stats Gained (All Combined):{" "}
                   {finalTotalStatsSum - initialTotalStatsSum}
                 </li>
