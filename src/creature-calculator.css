@@ -471,3 +471,12 @@ ul.sidebar-list-yellow {
   font-size: 20px;
   padding-left: 16px;
 }
+
+.youtube-frame {
+  min-width: 300px;
+  min-height: 200px;
+
+  @media (max-width: 1024px) {
+    width: 90%;
+  }
+}
