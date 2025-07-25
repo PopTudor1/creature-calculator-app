@@ -187,7 +187,6 @@
 
 /* test2 */
 .app-container {
-  min-height: 100vh;
   background-color: #000;
   padding: 1rem;
   color: #fff;
