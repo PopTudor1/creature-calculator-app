@@ -1014,7 +1014,7 @@ export default function CreatureCalculator(): JSX.Element {
           )}
         </div>
       </div>
-      <div
+      {/* <div
         style={{
           color: "white",
           padding: "16px",
@@ -1067,7 +1067,7 @@ export default function CreatureCalculator(): JSX.Element {
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         ></iframe>
-      </div>
+      </div> */}
     </div>
   );
 }
