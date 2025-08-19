@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import BlackDragonIcon from "./assets/ssr-creatures/Black-dragon-icon.png";
 import DemonKnightIcon from "./assets/ssr-creatures/Demon-knight-icon.png";
 import DragonaIcon from "./assets/ssr-creatures/Dragona-icon.png";
+import Fistieicon from "./assets/ssr-creatures/Fistie-icon.png";
 import GaizelIcon from "./assets/ssr-creatures/Gaizel-icon.png";
 import IkataIcon from "./assets/ssr-creatures/Ikata-icon.png";
 import KaipoonIcon from "./assets/ssr-creatures/Kaipoon-icon.png";
@@ -16,9 +17,11 @@ import TriceratopsIcon from "./assets/ssr-creatures/Triceratops-icon.png";
 import UnicusIcon from "./assets/ssr-creatures/Unicus-icon.png";
 import UrusIcon from "./assets/ssr-creatures/Urus-icon.png";
 import VoidBugIcon from "./assets/ssr-creatures/Void-bug-icon.png";
+
 //ur images
 import AaronIcon from "./assets/ur-creatures/Aaron-icon.png";
 import BlindMonsterIcon from "./assets/ur-creatures/Blind-monster-icon.png";
+import DemigodFistieIcon from "./assets/ur-creatures/Demigod-Fistie-icon.png";
 import DraxillosIcon from "./assets/ur-creatures/Draxillos-icon.png";
 import HarclingIcon from "./assets/ur-creatures/Harcling-icon.png";
 import LionerIcon from "./assets/ur-creatures/Lioner-icon.png";
@@ -94,6 +97,7 @@ export default function CreatureCalculator(): JSX.Element {
     { label: "Puska", src: PuskaIcon, color: "#d3f9d8" },
     { label: "Snook", src: SnookIcon, color: "#d3f9d8" },
     { label: "Mantis", src: MantisIcon, color: "#d3f9d8" },
+    { label: "Fistie", src: Fistieicon, color: "#d3f9d8" },
   ];
 
   //add a new object for each new UR creature
@@ -109,6 +113,7 @@ export default function CreatureCalculator(): JSX.Element {
     { label: "Nependead", src: NependeadIcon, color: "#d3f9d8" },
     { label: "Tumoru", src: TumoruIcon, color: "#d3f9d8" },
     { label: "Lioner", src: LionerIcon, color: "#d3f9d8" },
+    { label: "Demigod Fistie", src: DemigodFistieIcon, color: "#d3f9d8" },
   ];
 
   const evolutionOptionsSSR = [
